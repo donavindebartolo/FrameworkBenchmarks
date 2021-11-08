@@ -6,6 +6,7 @@ using HTTP
 using MySQL
 using JSON3
 using StructTypes
+using Sockets
 
 struct jsonObj
     id::Int
@@ -176,4 +177,5 @@ HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
 
-HTTP.serve(ROUTER, "0.0.0.0" , 8080, reuseaddr=true)
+server = Sockets.listen(Sockets.InetAddr(parse(IPAddr, "0.0.0.0"), 8080))
+@async HTTP.serve(ROUTER, "0.0.0.0" , 8080, reuseaddr=true; server = server)
