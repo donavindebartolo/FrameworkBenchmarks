@@ -34,7 +34,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = body)
     end
         
-    @async function singleQuery(req::HTTP.Request)
+    function singleQuery(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -52,7 +52,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write((JSON3.read(jsonString))))
     end
         
-    @async function multipleQueries(req::HTTP.Request)
+    function multipleQueries(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -93,7 +93,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write(responseArray))
     end
         
-    @async function updates(req::HTTP.Request)
+    function updates(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -136,7 +136,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write(responseArray))
     end
         
-    @async function fortunes(req::HTTP.Request)
+    function fortunes(req::HTTP.Request)
         headers = [ "Content-Type" => "text/html; charset=utf-8",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -175,4 +175,4 @@ HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
 
-HTTP.serve(ROUTER, "0.0.0.0" , 8080, reuseaddr=true)
+@async HTTP.serve(ROUTER, "0.0.0.0" , 8080, reuseaddr=true)
