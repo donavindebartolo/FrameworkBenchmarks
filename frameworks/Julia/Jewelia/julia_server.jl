@@ -34,13 +34,13 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = body)
     end
         
-   @sync function singleQuery(req::HTTP.Request)
+   @async function singleQuery(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
     
         randNum = rand(1:10000)
-        @async begin
+      
         conn = DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world")
         sqlQuery = "SELECT * FROM World WHERE id = $randNum"
         results = DBInterface.execute(conn, sqlQuery)
@@ -50,7 +50,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         
         DBInterface.close!(conn)
         return HTTP.Response(200, headers, body = JSON3.write((JSON3.read(jsonString))))
-        end
+        
     end
         
     function multipleQueries(req::HTTP.Request)
@@ -171,7 +171,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
 const ROUTER = HTTP.Router()
 HTTP.@register(ROUTER, "GET", "/plaintext", plaintext)
 HTTP.@register(ROUTER, "GET", "/json", jsonSerialization)
-HTTP.@register(ROUTER, "GET", "/db", singleQuery)
+HTTP.@register(ROUTER, "GET", "/db", @async singleQuery)
 HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
