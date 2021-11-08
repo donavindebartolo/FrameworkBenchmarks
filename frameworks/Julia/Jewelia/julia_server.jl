@@ -41,7 +41,8 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
     
         randNum = rand(1:10000)
-      
+        
+        yield()
         conn = DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world")
         sqlQuery = "SELECT * FROM World WHERE id = $randNum"
         results = DBInterface.execute(conn, sqlQuery)
