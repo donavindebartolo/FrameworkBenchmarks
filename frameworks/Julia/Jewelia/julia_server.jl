@@ -34,7 +34,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = body)
     end
         
-    function singleQuery(req::HTTP.Request)
+    @async function singleQuery(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -52,7 +52,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write((JSON3.read(jsonString))))
     end
         
-    function multipleQueries(req::HTTP.Request)
+    @async function multipleQueries(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -93,7 +93,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write(responseArray))
     end
         
-    function updates(req::HTTP.Request)
+    @async function updates(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -136,7 +136,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = JSON3.write(responseArray))
     end
         
-    function fortunes(req::HTTP.Request)
+    @async function fortunes(req::HTTP.Request)
         headers = [ "Content-Type" => "text/html; charset=utf-8",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
