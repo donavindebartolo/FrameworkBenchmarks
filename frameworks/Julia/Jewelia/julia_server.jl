@@ -177,4 +177,4 @@ HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
 
-@async HTTP.serve(ROUTER, "0.0.0.0", 8080, reuseaddr=true)
+@async HTTP.serve(ROUTER, "0.0.0.0", 8080, reuseaddr=true, verbose=true)
