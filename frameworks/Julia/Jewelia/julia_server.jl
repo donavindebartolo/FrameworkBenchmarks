@@ -34,7 +34,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
         return HTTP.Response(200, headers, body = body)
     end
         
-   @async function singleQuery(req::HTTP.Request)
+   function singleQuery(req::HTTP.Request)
         headers = [ "Content-Type" => "application/json",
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
@@ -171,7 +171,7 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
 const ROUTER = HTTP.Router()
 HTTP.@register(ROUTER, "GET", "/plaintext", plaintext)
 HTTP.@register(ROUTER, "GET", "/json", jsonSerialization)
-HTTP.@register(ROUTER, "GET", "/db", @async singleQuery)
+HTTP.@register(ROUTER, "GET", "/db", singleQuery)
 HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
