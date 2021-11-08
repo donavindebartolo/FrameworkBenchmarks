@@ -177,5 +177,4 @@ HTTP.@register(ROUTER, "GET", "/queries", multipleQueries)
 HTTP.@register(ROUTER, "GET", "/updates", updates)
 HTTP.@register(ROUTER, "GET", "/fortunes", fortunes)
 
-server = Sockets.listen(Sockets.InetAddr(parse(IPAddr, "0.0.0.0"), 8080))
-@async HTTP.serve(ROUTER, reuseaddr=true; server = server)
+@async HTTP.serve(ROUTER, "0.0.0.0", 8080, reuseaddr=true)
