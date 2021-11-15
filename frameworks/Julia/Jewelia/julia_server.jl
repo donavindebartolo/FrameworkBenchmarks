@@ -83,7 +83,6 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
             randNum = rand(1:10000)
             sqlQuery = "SELECT * FROM World WHERE id = $randNum"
             results = DBInterface.execute(conn, sqlQuery)
-            wait(results)
             row = first(results)
             dbNumber = row[2]
             responseArray[i] = JSON3.read("{\"id\":$randNum,\"randomNumber\":$dbNumber}", jsonObj)
