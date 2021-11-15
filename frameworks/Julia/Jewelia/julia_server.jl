@@ -27,11 +27,11 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
                     "Server" => "Julia-HTTP",
                     "Date" => Dates.format(Dates.now(), Dates.RFC1123Format) * " GMT" ]
     
-        jsonString = """{"Message": "Hello, World!"}"""
-        hello_world = JSON3.read(jsonString)
-        body = JSON3.write(hello_world)
+        #jsonString = """{"Message": "Hello, World!"}"""
+        #hello_world = JSON3.read(jsonString)
+        #body = JSON3.write(hello_world)
  
-        return HTTP.Response(200, headers, body = body)
+        return HTTP.Response(200, headers, body = {'message': 'Hello, world!'})
     end
         
     function singleQuery(req::HTTP.Request)
@@ -41,9 +41,9 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
     
         randNum = rand(1:10000)
 
-        conn = wait(DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world"))
+        conn = DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world")
         sqlQuery = "SELECT * FROM World WHERE id = $randNum"
-        results = wait(DBInterface.execute(conn, sqlQuery))
+        results = DBInterface.execute(conn, sqlQuery)
         row = first(results)
         dbNumber = row[2]
         jsonString = "{\"id\":$randNum,\"randomNumber\":$dbNumber}"
