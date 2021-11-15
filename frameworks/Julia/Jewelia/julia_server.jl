@@ -41,9 +41,9 @@ StructTypes.StructType(::Type{jsonObj}) = StructTypes.Struct()
     
         randNum = rand(1:10000)
 
-        conn = DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world")
+        conn = wait(DBInterface.connect(MySQL.Connection, "tfb-database", "benchmarkdbuser", "benchmarkdbpass", db="hello_world"))
         sqlQuery = "SELECT * FROM World WHERE id = $randNum"
-        results = DBInterface.execute(conn, sqlQuery)
+        results = wait(DBInterface.execute(conn, sqlQuery))
         row = first(results)
         dbNumber = row[2]
         jsonString = "{\"id\":$randNum,\"randomNumber\":$dbNumber}"
